@@ -33685,7 +33685,7 @@ var useDropdown = function useDropdown(label, defaultState, options) {
   var _useState = (0, _react.useState)(defaultState),
       _useState2 = _slicedToArray(_useState, 2),
       state = _useState2[0],
-      updateState = _useState2[1];
+      setState = _useState2[1];
 
   var id = "use-dropdown-".concat(label.replace('', '').toLowerCase());
 
@@ -33696,10 +33696,10 @@ var useDropdown = function useDropdown(label, defaultState, options) {
       id: id,
       value: state,
       onChange: function onChange(event) {
-        return updateState(event.target.value);
+        return setState(event.target.value);
       },
       onBlur: function onBlur(event) {
-        return updateState(event.target.value);
+        return setState(event.target.value);
       },
       disabled: options.length === 0
     }, _react.default.createElement("option", null, "All"), options.map(function (item) {
@@ -33709,39 +33709,11 @@ var useDropdown = function useDropdown(label, defaultState, options) {
     })));
   };
 
-  return [state, Dropdown, updateState];
+  return [state, Dropdown, setState];
 };
 
 var _default = useDropdown;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"Pet.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = Pet;
-
-var _react = _interopRequireDefault(require("react"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//import { render } from 'react-dom'
-function Pet(_ref) {
-  var name = _ref.name,
-      animal = _ref.animal,
-      breed = _ref.breed;
-  // return React.createElement('div', {}, [
-  // //     React.createElement('h1', {}, name),
-  // //     React.createElement('h2', {}, animal),
-  // //     React.createElement('h2', {}, breed)
-  // // ]);
-  return _react.default.createElement("div", {
-    className: "PetContainer"
-  }, _react.default.createElement("h1", null, name), _react.default.createElement("h2", null, animal), _react.default.createElement("h2", null, breed));
-}
-
-; //export default Pet;
 },{"react":"../node_modules/react/index.js"}],"SearchParams.js":[function(require,module,exports) {
 "use strict";
 
@@ -33755,8 +33727,6 @@ var _react = _interopRequireWildcard(require("react"));
 var _pet = _interopRequireWildcard(require("@frontendmasters/pet"));
 
 var _UseDropdown5 = _interopRequireDefault(require("./UseDropdown"));
-
-var _Pet = _interopRequireDefault(require("./Pet"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33772,6 +33742,7 @@ function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) ||
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+//import pet from "./Pet";
 var SearchParams = function SearchParams() {
   // functional component for hooks.
   var _useState = (0, _react.useState)("Seattle, WA"),
@@ -33784,7 +33755,7 @@ var SearchParams = function SearchParams() {
   var _useState3 = (0, _react.useState)([]),
       _useState4 = _slicedToArray(_useState3, 2),
       breeds = _useState4[0],
-      updateBreeds = _useState4[1];
+      setBreeds = _useState4[1];
 
   var _UseDropdown = (0, _UseDropdown5.default)('Animal', 'dog', _pet.ANIMALS),
       _UseDropdown2 = _slicedToArray(_UseDropdown, 2),
@@ -33792,15 +33763,29 @@ var SearchParams = function SearchParams() {
       AnimalDropdown = _UseDropdown2[1];
 
   var _UseDropdown3 = (0, _UseDropdown5.default)('Breed', '', breeds),
-      _UseDropdown4 = _slicedToArray(_UseDropdown3, 2),
+      _UseDropdown4 = _slicedToArray(_UseDropdown3, 3),
       breed = _UseDropdown4[0],
-      BreedDropdown = _UseDropdown4[1]; //useEffect schedules the function to run after the render happens. Render runs 1st..(Duhhh..🙄) 
+      BreedDropdown = _UseDropdown4[1],
+      setBreed = _UseDropdown4[2]; //useEffect schedules the function to run after the render happens. Render runs 1st..(Duhhh..🙄) 
   //useEffect takes the place of componentDidMount 
+  //changing the Breed dropdown when Animal is changed. So it will make sense when choosing a pet. It switches out the option list for Breed
 
 
   (0, _react.useEffect)(function () {
-    _pet.default.breeds('dog').then(console.log, console.error);
-  });
+    setBreeds([]);
+    setBreed('');
+
+    _pet.default.breeds(animal).then(function (_ref) {
+      var breeds = _ref.breeds;
+      var breedStrings = breeds.map(function (_ref2) {
+        var name = _ref2.name;
+        return name;
+      });
+      setBreeds(breedStrings);
+    }, console.error);
+  }, [animal, setBreed, setBreeds]); // useEffect requires that you declare the dependencies. It will only run when these things change. The render will run continuously with them. 
+  //So! If any of these things changed rerun this effect after it renders otherwise don't run it again. 
+
   return _react.default.createElement("div", {
     className: "search-params"
   }, _react.default.createElement("form", null, _react.default.createElement("label", {
@@ -33820,7 +33805,7 @@ var SearchParams = function SearchParams() {
 
 var _default = SearchParams;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","@frontendmasters/pet":"../node_modules/@frontendmasters/pet/index.js","./UseDropdown":"UseDropdown.js","./Pet":"Pet.js"}],"App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@frontendmasters/pet":"../node_modules/@frontendmasters/pet/index.js","./UseDropdown":"UseDropdown.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -33867,7 +33852,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49509" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56271" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

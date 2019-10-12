@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from "react";
 import pet, { ANIMALS } from "@frontendmasters/pet";
 import UseDropdown from './UseDropdown';
-import Pet from "./Pet";
+//import pet from "./Pet";
 
 const SearchParams = () => { // functional component for hooks.
   const [location, updateLocation] = useState("Seattle, WA");
   //const [animal, updateAnimal] = useState("dog");
   //const [breed, updateBreed] = useState('');
-  const [breeds, updateBreeds] = useState([]); 
+  const [breeds, setBreeds] = useState([]); 
   const [animal, AnimalDropdown] = UseDropdown('Animal', 'dog', ANIMALS);
-  const [breed, BreedDropdown] = UseDropdown('Breed', '', breeds)
+  const [breed, BreedDropdown, setBreed] = UseDropdown('Breed', '', breeds)
 
   //useEffect schedules the function to run after the render happens. Render runs 1st..(Duhhh..🙄) 
   //useEffect takes the place of componentDidMount 
-  useEffect(() => {
-     pet.breeds('dog').then(console.log, console.error);
-  });
 
+  //changing the Breed dropdown when Animal is changed. So it will make sense when choosing a pet. It switches out the option list for Breed
+  useEffect(() => {
+    setBreeds([]);
+    setBreed('');
+
+    pet.breeds(animal).then(({ breeds }) => {
+      const breedStrings = breeds.map(({ name }) => name );
+setBreeds(breedStrings);
+    }, console.error); 
+  }, [animal, setBreed, setBreeds]); // useEffect requires that you declare the dependencies. It will only run when these things change. The render will run continuously with them. 
+      //So! If any of these things changed rerun this effect after it renders otherwise don't run it again. 
 
   return (
     <div className="search-params">
