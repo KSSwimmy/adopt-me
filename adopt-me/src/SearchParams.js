@@ -10,6 +10,20 @@ const SearchParams = () => { // functional component for hooks.
   const [breeds, setBreeds] = useState([]); 
   const [animal, AnimalDropdown] = UseDropdown('Animal', 'dog', ANIMALS);
   const [breed, BreedDropdown, setBreed] = UseDropdown('Breed', '', breeds)
+  const [pets, setPets] = useState([]); // empty arrays because when you 1st request things from the api theres going to nothing there
+
+
+  //anything that is an async function is guaranteed to return a promise that resolve whenever this function completes.
+  async function requestPets() {
+    const { animals } = await pet.animals({
+      location,
+      breed,
+      type: animal
+    })
+
+    //setting the pets with the animals OR if it comes back with nothing just set it to continue to be an empty array.
+    setPets(animals || []); //
+  }
 
   //useEffect schedules the function to run after the render happens. Render runs 1st..(Duhhh..🙄) 
   //useEffect takes the place of componentDidMount 
@@ -33,6 +47,10 @@ setBreeds(breedStrings);
 
   return (
     <div className="search-params">
+      <form onSubmit={(event) => {
+            event.preventDefault(); // this will prevent it from submitting a HTML post form.
+            requestPets();
+          }}></form>
       <form>
         {/* Location */}
         <label htmlFor="location">
