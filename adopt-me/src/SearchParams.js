@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import pet, { ANIMALS } from "@frontendmasters/pet";
 import UseDropdown from './UseDropdown';
+import Results from './Results';
 //import pet from "./Pet";
 
 const SearchParams = () => { // functional component for hooks.
@@ -35,9 +36,13 @@ const SearchParams = () => { // functional component for hooks.
     setBreed(''); //
 
     pet.breeds(animal).then(({ breeds: apiBreeds }) => {
+      console.log(animal)
       const breedStrings = apiBreeds.map(({ name }) => name );
-setBreeds(breedStrings);
+      setBreeds(breedStrings);
+      console.log('breedStrings',breedStrings)
+      console.log('pet' ,pet)
     }, console.error); 
+  
   }, [animal, setBreed, setBreeds]); // useEffect requires that you declare the dependencies. It will only run when these things change. The render will run continuously with them. 
       //So! If any of these things changed rerun this effect after it renders otherwise don't run it again. 
 
@@ -111,6 +116,7 @@ setBreeds(breedStrings);
 
         <button>Submit</button>
       </form>
+      <Results pets={pet} />
     </div>
   );
 };
