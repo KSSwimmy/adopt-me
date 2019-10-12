@@ -20,8 +20,8 @@ const SearchParams = () => { // functional component for hooks.
     setBreeds([]); // this restarts the Animal dropdown to change to the correct Breed
     setBreed(''); //
 
-    pet.breeds(animal).then(({ breeds }) => {
-      const breedStrings = breeds.map(({ name }) => name );
+    pet.breeds(animal).then(({ breeds: apiBreeds }) => {
+      const breedStrings = apiBreeds.map(({ name }) => name );
 setBreeds(breedStrings);
     }, console.error); 
   }, [animal, setBreed, setBreeds]); // useEffect requires that you declare the dependencies. It will only run when these things change. The render will run continuously with them. 

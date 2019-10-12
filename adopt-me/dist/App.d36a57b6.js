@@ -33778,8 +33778,8 @@ var SearchParams = function SearchParams() {
     setBreed(''); //
 
     _pet.default.breeds(animal).then(function (_ref) {
-      var breeds = _ref.breeds;
-      var breedStrings = breeds.map(function (_ref2) {
+      var apiBreeds = _ref.breeds;
+      var breedStrings = apiBreeds.map(function (_ref2) {
         var name = _ref2.name;
         return name;
       });
@@ -33822,9 +33822,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // import Pet from './Pet';
 var App = function App() {
-  return _react.default.createElement("div", null, _react.default.createElement("h1", {
+  return _react.default.createElement(_react.default.StrictMode, null, _react.default.createElement("div", null, _react.default.createElement("h1", {
     id: "something-important"
-  }, "Adopt Me!"), _react.default.createElement(_SearchParams.default, null));
+  }, "Adopt Me!"), _react.default.createElement(_SearchParams.default, null)));
 };
 
 (0, _reactDom.render)(_react.default.createElement(App, null), document.getElementById('root')); //export default App;
@@ -33856,7 +33856,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56271" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51693" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

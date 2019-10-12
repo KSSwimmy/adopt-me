@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev:mock": "cross-env PET_MOCK=mock npm run dev",
     "dev": "parcel src/index.html"
   },
   "keywords": [],
@@ -12,6 +13,7 @@
   "devDependencies": {
     "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.2",
+    "cross-env": "^6.0.3",
     "parcel-bundler": "^1.12.3",
     "prettier": "^1.18.2"
   },
@@ -21,4 +23,5 @@
     "react-dom": "^16.10.2",
     "u": "^0.1.0"
   }
+
 }
