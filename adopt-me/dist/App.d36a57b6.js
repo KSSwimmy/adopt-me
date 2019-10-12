@@ -33769,11 +33769,13 @@ var SearchParams = function SearchParams() {
       setBreed = _UseDropdown4[2]; //useEffect schedules the function to run after the render happens. Render runs 1st..(Duhhh..🙄) 
   //useEffect takes the place of componentDidMount 
   //changing the Breed dropdown when Animal is changed. So it will make sense when choosing a pet. It switches out the option list for Breed
+  //this effect only changes when it is changed
 
 
   (0, _react.useEffect)(function () {
-    setBreeds([]);
-    setBreed('');
+    setBreeds([]); // this restarts the Animal dropdown to change to the correct Breed
+
+    setBreed(''); //
 
     _pet.default.breeds(animal).then(function (_ref) {
       var breeds = _ref.breeds;

@@ -15,9 +15,10 @@ const SearchParams = () => { // functional component for hooks.
   //useEffect takes the place of componentDidMount 
 
   //changing the Breed dropdown when Animal is changed. So it will make sense when choosing a pet. It switches out the option list for Breed
+  //this effect only changes when it is changed
   useEffect(() => {
-    setBreeds([]);
-    setBreed('');
+    setBreeds([]); // this restarts the Animal dropdown to change to the correct Breed
+    setBreed(''); //
 
     pet.breeds(animal).then(({ breeds }) => {
       const breedStrings = breeds.map(({ name }) => name );
