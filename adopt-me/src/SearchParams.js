@@ -27,6 +27,10 @@ setBreeds(breedStrings);
   }, [animal, setBreed, setBreeds]); // useEffect requires that you declare the dependencies. It will only run when these things change. The render will run continuously with them. 
       //So! If any of these things changed rerun this effect after it renders otherwise don't run it again. 
 
+      //without those dependencies it will create an infinite loop (yikes!)
+
+      //Empty arrays in the function without any dependencies will only update once at "mount"
+
   return (
     <div className="search-params">
       <form>
